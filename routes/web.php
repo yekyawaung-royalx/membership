@@ -10,20 +10,7 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/', function () {
-    $members = DB::table('members')->where('nrc','like','8/'.'%')->get();
-
-
-    foreach($members as $member){
-        // $nrc = str_replace(' ', '',strtoupper($member->nrc));
-        
-        // DB::table('members')->where('id',$member->id)->update([
-        //     'nrc' => $nrc
-        // ]);
-        
-        echo $member->nrc;
-        echo "<br>";
-    }
-    //return view('welcome');
+    return view('welcome');
 });
 
 Route::get('/dashboard', function () {
