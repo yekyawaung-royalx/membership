@@ -213,7 +213,6 @@
 	<script src="{{ asset('_backend/_js/main.js') }}"></script>
 	<!-- END: Page JS-->
 	<script src="https://www.gstatic.com/firebasejs/7.23.0/firebase.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 	<script>
 	    	var firebaseConfig = {
 		        apiKey: "AIzaSyBMOs7y9LpkUM0fgqs34aVQogeh-qt0njg",
@@ -235,7 +234,7 @@
 		                	return messaging.getToken()
 		            	})
 	            		.then(function(token) {
-	                console.log(token);
+	                //console.log(token);
 
 	                $.ajaxSetup({
 	                    headers: {
@@ -279,7 +278,6 @@
 		        rejected    = parseInt($(".rejected-count").text());
 		        total       = pending + approved + rejected;
 
-		        console.log(total);
 		        $(".total-count").text(total);
       		});
 	</script>
