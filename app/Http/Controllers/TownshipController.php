@@ -71,7 +71,7 @@ class TownshipController extends Controller
     }
 
     public function json_townships(){
-        $townships = DB::table('townships')->paginate(20);
+        $townships = DB::table('townships')->paginate(100);
 
         return response()->json($townships);
     }
