@@ -172,8 +172,7 @@ class ApiController extends Controller
 
         //checked auth
         $member = DB::table('members')->select(
-            'id','digital_id','name','state_id','state_name','city_id','township_id','township_name',
-            'user_level','mobile','ref','passcode','selfie_photo','nrc','dob',
+            'id','digital_id','name','user_level','mobile','ref','passcode','nrc','dob',
             'user_level','address','note','registered_at','active'
         )->orWhere('ref',$login)->orWhere('mobile',$login)->first();
 
@@ -220,13 +219,9 @@ class ApiController extends Controller
                     $data['login']          = $member->ref;
                     $data['company_type']   = check_customer_type($member->ref);
                     $data['user_level']     = $member->user_level;
-                    $data['state']          = array($member->state_id,$member->state_name);
-                    $data['city']           = array($member->city_id,null);
-                    $data['township']       = array($member->township_id,$member->township_name);
                     $data['comment']        = $member->note;
                     $data['nrc']            = $member->nrc;
                     $data['dob']            = $member->dob;
-                    $data['selfie_photo']   = $member->selfie_photo;
                     $data['user_level']     = $member->user_level;
                     $data['address']        = $member->address;
                     $data['comment']        = $member->note;
