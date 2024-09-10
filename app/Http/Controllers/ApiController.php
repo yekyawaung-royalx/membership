@@ -214,18 +214,8 @@ class ApiController extends Controller
                     //response member info
                     $data['membership_id']  = $member->id;
                     $data['id']             = $member->digital_id;
-                    $data['name']           = $member->name;
-                    $data['mobile']         = $member->mobile;
                     $data['login']          = $member->ref;
                     $data['company_type']   = check_customer_type($member->ref);
-                    $data['user_level']     = $member->user_level;
-                    $data['comment']        = $member->note;
-                    $data['nrc']            = $member->nrc;
-                    $data['dob']            = $member->dob;
-                    $data['user_level']     = $member->user_level;
-                    $data['address']        = $member->address;
-                    $data['comment']        = $member->note;
-                    $data['registered_at']  = $member->registered_at;
                     $data['token']          = $get_token->token;
                     $data['expired_at']     = $get_token->expired_at;
 
