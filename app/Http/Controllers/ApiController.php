@@ -715,6 +715,7 @@ class ApiController extends Controller
                 'township_name'     => $request->township? $request->township_name:$member->township_name,
                 'address'           => $request->address? $request->address:$member->address,
                 'user_level'        => $request->user_level? $request->user_level:$member->user_level,
+                'selfie_photo'   => $request->selfie_photo? $request->selfie_photo:$member->selfie_photo,
                 'nrc_front_photo'   => $request->nrc_front_photo? $request->nrc_front_photo:$member->nrc_front_photo,
                 'nrc_back_photo'    => $request->nrc_back_photo? $request->nrc_back_photo:$member->nrc_back_photo,
                 'selfie_photo'      => $request->selfie_photo? $request->selfie_photo:$member->selfie_photo,
