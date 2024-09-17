@@ -380,7 +380,7 @@ class ApiController extends Controller
                     'nrc_back_photo'    => $request->nrc_back_photo,
                     'selfie_photo'      => $request->selfie_photo,
                     'user_level'        => 1,
-                    'status'            => 1,
+                    'status'            => 0,
                     'active'            => 1,
                     'registered_at'     => date('Y-m-d H:i:s'),
                     'created_at'        => date('Y-m-d H:i:s'),
