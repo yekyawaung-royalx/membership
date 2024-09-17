@@ -26,10 +26,10 @@
 			                <div>Processing Members</div>
 			            </a>
 		            </li>
-		            <li class="menu-item {{ request()->is('members/completed') ? 'active' : '' }}">
-		                <a href="{{ url('members/completed') }}" class="menu-link">
+		            <li class="menu-item {{ request()->is('members/verified') ? 'active' : '' }}">
+		                <a href="{{ url('members/verified') }}" class="menu-link">
 		                    <i class="tf-icons bx bx-user me-1"></i>
-		                    <div>Completed Members</div>
+		                    <div>Verified Members</div>
 		                </a>
 		            </li>
                     <li class="menu-item {{ request()->is('members/all') ? 'active' : '' }}">

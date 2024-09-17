@@ -117,7 +117,7 @@
         $response = array();
         $response['unverified']    = array();
         $response['processing']   = array();
-        $response['completed']   = array();
+        $response['verified']   = array();
 
         if($params == 'today'){
             $status = DB::table('members as m')
@@ -135,7 +135,7 @@
         foreach ($status as $key => $value) {
             $key == 0 ? $response['unverified'] = $value:$response['unverified'] = array();
             $key == 1 ? $response['processing'] = $value:$response['processing'] = array();
-            $key == 2? $response['completed'] = $value:$response['completed'] = array();
+            $key == 2? $response['verified'] = $value:$response['verified'] = array();
         }
 
         return $response;
@@ -259,7 +259,7 @@
         }else if($status == 1){
             return '<span class="badge rounded-pill bg-warning text-capitalized">Processing</span>';
         }else{
-            return '<span class="badge rounded-pill bg-success text-capitalized">Completed</span>';
+            return '<span class="badge rounded-pill bg-success text-capitalized">Verified</span>';
         }
     }
 
@@ -269,7 +269,7 @@
         }else if($status == 1){
             return 'Processing';
         }else{
-            return 'Completed';
+            return 'Verified';
         }
     }
 

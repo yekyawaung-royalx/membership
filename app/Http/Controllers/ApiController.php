@@ -647,6 +647,7 @@ class ApiController extends Controller
                 //upgrade member level
                 DB::table('members')->where('digital_id',$request->digital_id)->update([
                     'user_level'    => 2,
+                    'status'    => 2,
                     'updated_at'    => date('Y-m-d H:i:s')
                 ]);
 

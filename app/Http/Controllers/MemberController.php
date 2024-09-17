@@ -73,7 +73,7 @@ class MemberController extends Controller
             $members = DB::table('members')->select('id','digital_id','name','mobile','ref','status','active','registered_at','user_level')->where('status',0)->orderBy('id','desc')->paginate(100);
         }else if($status == 'processing'){
             $members = DB::table('members')->select('id','digital_id','name','mobile','ref','status','active','registered_at','user_level')->where('status',1)->orderBy('id','desc')->paginate(100);
-        }else if($status == 'completed'){
+        }else if($status == 'verified'){
             $members = DB::table('members')->select('id','digital_id','name','mobile','ref','status','active','registered_at','user_level')->where('status',2)->orderBy('id','desc')->paginate(100);
         }else{
             $members = DB::table('members')->select('id','digital_id','name','mobile','ref','status','active','registered_at','user_level')->orderBy('id','desc')->paginate(100);

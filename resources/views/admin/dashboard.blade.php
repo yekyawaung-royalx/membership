@@ -110,11 +110,11 @@
 									          	<div class="avatar me-2">
 									            		<span class="avatar-initial rounded bg-label-success"><i class='bx bxs-user'></i></span>
 									          	</div>
-									          	<h4 class="ms-1 mb-0 completed-count">{{ member_status('all')['completed']? member_status('all')['completed']->total:0 }}</h4>
+									          	<h4 class="ms-1 mb-0 verified-count">{{ member_status('all')['verified']? member_status('all')['verified']->total:0 }}</h4>
 									        </div>
-								        	<p class="mb-1">Completed Members</p>
+								        	<p class="mb-1">Verified Members</p>
 								        	<p class="mb-0">
-								          		<span class="fw-medium me-1">{{ member_status('today')['completed']? member_status('today')['completed']->total:0 }}</span>
+								          		<span class="fw-medium me-1">{{ member_status('today')['verified']? member_status('today')['verified']->total:0 }}</span>
 								          		<small class="text-muted">(Today)</small>
 								        	</p>
 								      	</div>
@@ -218,8 +218,8 @@
                 total = 0;
                 unverified     = parseInt($(".unverified-count").text());
                 processing    = parseInt($(".processing-count").text());
-                completed    = parseInt($(".completed-count").text());
-                total       = unverified + processing + completed;
+                verified    = parseInt($(".verified-count").text());
+                total       = unverified + processing + verified;
 
                 $(".total-count").text(total);
             });
