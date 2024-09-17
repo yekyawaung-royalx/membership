@@ -1,10 +1,10 @@
 function member_status(status){
         if(status == 0) {
-            return '<span class="badge rounded-pill bg-warning">Pending</span>';
+            return '<span class="badge rounded-pill bg-danger text-capitalized">Unverified</span>';
         }else if(status == 1) {
-            return '<span class="badge rounded-pill bg-success">Approved</span>';
+            return '<span class="badge rounded-pill bg-warning text-capitalized">Processing</span>';
         }else if(status == 2 ) {
-            return '<span class="badge rounded-pill bg-danger">Rejected</span>';
+            return '<span class="badge rounded-pill bg-success text-capitalized">Completed</span>';
         }else{
             return 'Unknow';
         }

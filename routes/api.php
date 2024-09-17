@@ -23,3 +23,4 @@ Route::post('/terminate-user', [ApiController::class, 'terminate_user']);
 Route::post('/unlock-user', [ApiController::class, 'unlock_user']);
 Route::post('/delete-member', [ApiController::class, 'delete_member']);
 Route::get('/townships', [ApiController::class, 'json_townships']);
+Route::get('/member-register', [ApiController::class, 'member_register']);

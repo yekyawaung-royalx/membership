@@ -74,13 +74,13 @@
 								      	<div class="card-body">
 									        <div class="d-flex align-items-center mb-2 pb-1">
 										        <div class="avatar me-2">
-										            	<span class="avatar-initial rounded bg-label-warning"><i class='bx bxs-user'></i></span>
+										            	<span class="avatar-initial rounded bg-label-danger"><i class='bx bxs-user'></i></span>
 										        </div>
-									          	<h4 class="ms-1 mb-0 pending-count">{{ member_status('all')['pending']? member_status('all')['pending']->total:0 }}</h4>
+									          	<h4 class="ms-1 mb-0 unverified-count">{{ member_status('all')['unverified']? member_status('all')['unverified']->total:0 }}</h4>
 									        </div>
-									        <p class="mb-1">Pending Members</p>
+									        <p class="mb-1">Unverified Members</p>
 									        <p class="mb-0">
-									          	<span class="fw-medium me-1">{{ member_status('today')['pending']? member_status('today')['pending']->total:0 }}</span>
+									          	<span class="fw-medium me-1">{{ member_status('today')['unverified']? member_status('today')['unverified']->total:0 }}</span>
 									          	<small class="text-muted">(Today)</small>
 									        </p>
 							      		</div>
@@ -91,13 +91,13 @@
 								      	<div class="card-body">
 									        <div class="d-flex align-items-center mb-2 pb-1">
 									          	<div class="avatar me-2">
-									            		<span class="avatar-initial rounded bg-label-success"><i class='bx bxs-user'></i></span>
+									            		<span class="avatar-initial rounded bg-label-warning"><i class='bx bxs-user'></i></span>
 									          	</div>
-									          	<h4 class="ms-1 mb-0 approved-count">{{ member_status('all')['approved']? member_status('all')['approved']->total:0 }}</h4>
+									          	<h4 class="ms-1 mb-0 processing-count">{{ member_status('all')['processing']? member_status('all')['processing']->total:0 }}</h4>
 									        </div>
-								        	<p class="mb-1">Approved Members</p>
+								        	<p class="mb-1">Processing Members</p>
 								        	<p class="mb-0">
-								          		<span class="fw-medium me-1">{{ member_status('today')['approved']? member_status('today')['approved']->total:0 }}</span>
+								          		<span class="fw-medium me-1">{{ member_status('today')['processing']? member_status('today')['processing']->total:0 }}</span>
 								          		<small class="text-muted">(Today)</small>
 								        	</p>
 								      	</div>
@@ -108,13 +108,13 @@
 								      	<div class="card-body">
 									        <div class="d-flex align-items-center mb-2 pb-1">
 									          	<div class="avatar me-2">
-									            		<span class="avatar-initial rounded bg-label-danger"><i class='bx bxs-user'></i></span>
+									            		<span class="avatar-initial rounded bg-label-success"><i class='bx bxs-user'></i></span>
 									          	</div>
-									          	<h4 class="ms-1 mb-0 rejected-count">{{ member_status('all')['rejected']? member_status('all')['rejected']->total:0 }}</h4>
+									          	<h4 class="ms-1 mb-0 completed-count">{{ member_status('all')['completed']? member_status('all')['completed']->total:0 }}</h4>
 									        </div>
-								        	<p class="mb-1">Rejected Members</p>
+								        	<p class="mb-1">Completed Members</p>
 								        	<p class="mb-0">
-								          		<span class="fw-medium me-1">{{ member_status('today')['rejected']? member_status('today')['rejected']->total:0 }}</span>
+								          		<span class="fw-medium me-1">{{ member_status('today')['completed']? member_status('today')['completed']->total:0 }}</span>
 								          		<small class="text-muted">(Today)</small>
 								        	</p>
 								      	</div>
@@ -157,7 +157,7 @@
 												                  	<h6 class="mb-0">{{ $member->mobile }}</h6>
 												                </td>
 												                <td class="text-end pe-0">
-												                  	<span class="fw-medium">{!! status($member->status) !!}</span>
+												                  	<span class="fw-medium">{!! kyc_status($member->status) !!}</span>
 												                </td>
 											              	</tr>
 											              	@endforeach
@@ -214,6 +214,15 @@
 	<!-- END: Page JS-->
 	<script src="https://www.gstatic.com/firebasejs/7.23.0/firebase.js"></script>
 	<script>
+        $(document).ready(function(){
+                total = 0;
+                unverified     = parseInt($(".unverified-count").text());
+                processing    = parseInt($(".processing-count").text());
+                completed    = parseInt($(".completed-count").text());
+                total       = unverified + processing + completed;
+
+                $(".total-count").text(total);
+            });
 	    	var firebaseConfig = {
 		        apiKey: "AIzaSyBMOs7y9LpkUM0fgqs34aVQogeh-qt0njg",
 		  	authDomain: "vue-store-4651d.firebaseapp.com",
@@ -271,15 +280,7 @@
 	    	});
 
    
-      		$(document).ready(function(){
-		        total = 0;
-		        pending     = parseInt($(".pending-count").text());
-		        approved    = parseInt($(".approved-count").text());
-		        rejected    = parseInt($(".rejected-count").text());
-		        total       = pending + approved + rejected;
-
-		        $(".total-count").text(total);
-      		});
+      		
 	</script>
 </body>
 </html>

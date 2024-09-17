@@ -115,9 +115,9 @@
     function member_status($params){
         $today = date('Y-m-d');
         $response = array();
-        $response['pending']    = array();
-        $response['approved']   = array();
-        $response['rejected']   = array();
+        $response['unverified']    = array();
+        $response['processing']   = array();
+        $response['completed']   = array();
 
         if($params == 'today'){
             $status = DB::table('members as m')
@@ -133,9 +133,9 @@
         }
 
         foreach ($status as $key => $value) {
-            $key == 0 ? $response['pending'] = $value:$response['pending'] = array();
-            $key == 1 ? $response['approved'] = $value:$response['approved'] = array();
-            $key == 2? $response['rejected'] = $value:$response['rejected'] = array();
+            $key == 0 ? $response['unverified'] = $value:$response['unverified'] = array();
+            $key == 1 ? $response['processing'] = $value:$response['processing'] = array();
+            $key == 2? $response['completed'] = $value:$response['completed'] = array();
         }
 
         return $response;
@@ -253,16 +253,27 @@
         return json_decode($response);
     }
 
-    function status($status){
+    function kyc_status($status){
         if($status == 0){
-            return '<span class="badge rounded-pill bg-warning">pending</span>';
+            return '<span class="badge rounded-pill bg-danger text-capitalized">Unverified</span>';
         }else if($status == 1){
-            return '<span class="badge rounded-pill bg-success">approved</span>';
+            return '<span class="badge rounded-pill bg-warning text-capitalized">Processing</span>';
         }else{
-            return '<span class="badge rounded-pill bg-danger">rejected</span>';
+            return '<span class="badge rounded-pill bg-success text-capitalized">Completed</span>';
         }
-
     }
+
+    function member_kyc_status($status){
+        if($status == 0){
+            return 'Unverified';
+        }else if($status == 1){
+            return 'Processing';
+        }else{
+            return 'Completed';
+        }
+    }
+
+    
 
     /** user folder  **/
 	function folder($role){
@@ -335,5 +346,7 @@
         }
         return $randomString;
     }
+
+    
 
  ?>

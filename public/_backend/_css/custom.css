@@ -51,7 +51,7 @@
 }
 .selfie-lg{
 	height:200px !important;
-	width: auto;
+	width: auto !important;
 }
 .text-indent-20{
 	display: inline-block;
@@ -168,4 +168,7 @@ a.bg-primary:focus{
 }
 .block{
 	display: block;
+}
+.text-capitalized{
+	text-transform: capitalize !important;
 }

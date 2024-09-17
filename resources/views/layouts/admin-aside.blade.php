@@ -14,22 +14,22 @@
 		            <div>Members</div>
 		        </a>
                 <ul class="menu-sub">
-		            <li class="menu-item {{ request()->is('members/pending') ? 'active' : '' }}">
-			            <a href="{{ url('members/pending') }}" class="menu-link">
+		            <li class="menu-item {{ request()->is('members/unverified') ? 'active' : '' }}">
+			            <a href="{{ url('members/unverified') }}" class="menu-link">
 			                <i class="tf-icons bx bx-user me-1"></i>
-			                <div>Pending Members</div>
+			                <div>Unverifed Members</div>
 			            </a>
 		            </li>
-		            <li class="menu-item {{ request()->is('members/approved') ? 'active' : '' }}">
-			        	<a href="{{ url('members/approved') }}" class="menu-link">
+		            <li class="menu-item {{ request()->is('members/processing') ? 'active' : '' }}">
+			        	<a href="{{ url('members/processing') }}" class="menu-link">
 			                <i class="tf-icons bx bx-user me-1"></i>
-			                <div>Approved Members</div>
+			                <div>Processing Members</div>
 			            </a>
 		            </li>
-		            <li class="menu-item {{ request()->is('members/rejected') ? 'active' : '' }}">
-		                <a href="{{ url('members/rejected') }}" class="menu-link">
+		            <li class="menu-item {{ request()->is('members/completed') ? 'active' : '' }}">
+		                <a href="{{ url('members/completed') }}" class="menu-link">
 		                    <i class="tf-icons bx bx-user me-1"></i>
-		                    <div>Rejected Members</div>
+		                    <div>Completed Members</div>
 		                </a>
 		            </li>
                     <li class="menu-item {{ request()->is('members/all') ? 'active' : '' }}">

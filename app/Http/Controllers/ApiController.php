@@ -285,6 +285,7 @@ class ApiController extends Controller
                             $data['nrc_front_photo']    = $member->nrc_front_photo;
                             $data['nrc_back_photo']     = $member->nrc_back_photo;
                             $data['user_level']         = $member->user_level;
+                            $data['status']              = member_kyc_status($member->status);
                             $data['address']            = $member->address;
                             $data['comment']            = $member->note;
                             $data['registered_at']      = $member->created_at;
@@ -720,6 +721,7 @@ class ApiController extends Controller
                 'nrc_back_photo'    => $request->nrc_back_photo? $request->nrc_back_photo:$member->nrc_back_photo,
                 'selfie_photo'      => $request->selfie_photo? $request->selfie_photo:$member->selfie_photo,
                 'active'            => $request->active? $request->active:$member->active,
+                'status'            => $member->user_level == 2? 2:1,
                 'updated_at'        => date('Y-m-d H:i:s'),
             ]);
 
@@ -857,5 +859,126 @@ class ApiController extends Controller
         }
 
         return response()->json($response);
+    }
+
+    /* member registration */
+    public function digital_register_api(Request $request){
+        $data     = array();
+        $response = array();
+        $required = array();
+        $validate = 10;
+
+        $request->id              =='' ? array_push($required,'id is required'):$validate -= 1;
+        $request->name              =='' ? array_push($required,'name is required'):$validate -= 1;
+        $request->mobile            =='' ? array_push($required,'mobile is required'):$validate -= 1;
+        $request->passcode          =='' ? array_push($required,'passcode is required'):$validate -= 1;
+        $request->nrc               =='' ? array_push($required,'nrc is required'):$validate -= 1;
+        $request->dob               =='' ? array_push($required,'dob is required'):$validate -= 1;
+        $request->gender            =='' ? array_push($required,'gender is required'):$validate -= 1;
+        $request->state_id          =='' ? array_push($required,'state_id is required'):$validate -= 1;
+        $request->township_id       =='' ? array_push($required,'township_id is required'):$validate -= 1;
+        $request->address           =='' ? array_push($required,'address is required'):$validate -= 1;
+
+        if($validate == 0){
+            $mobile           = $request->mobile;
+
+            $member = DB::table('members')->select('mobile')->where('mobile',$mobile)->first();
+            if($member){
+
+                $http_code              = 403;
+                $response['success']    = 0;
+                $response['message']    = "Already member.";
+            }else{
+                $passcode = encryptcode($request->passcode);
+
+                //state
+                $state = DB::table('regions')->select('digital_id','en_name')->where('id',$request->state_id)->first();
+                //township
+                $township = DB::table('townships')->select('digital_id','digital_city_id','en_name')->where('id',$request->township_id)->first();
+
+                //register for new member
+                $id = DB::table('members')->insertGetId([
+                    'name'              => $request->name,
+                    'mobile'            => $request->mobile,
+                    'passcode'          => $passcode,
+                    'nrc'               => $request->nrc,
+                    'dob'               => $request->dob,
+                    'gender'            => $request->gender,
+                    'state_id'          => $state->digital_id,
+                    'state_name'        => $state->en_name,
+                    'city_id'           => $township->digital_city_id,
+                    'township_id'       => $township->digital_id,
+                    'township_name'     => $township->en_name,
+                    'address'           => $request->address,
+                    'user_level'        => 1,
+                    'status'            => 1,
+                    'active'            => 1,
+                    'registered_at'     => date('Y-m-d H:i:s'),
+                    'created_at'        => date('Y-m-d H:i:s'),
+                    'updated_at'        => date('Y-m-d H:i:s'),
+                ]);
+
+                //saved member action logs
+                DB::table('member_logs')->insertGetId([
+                    'membership_id'     => $id,
+                    'slug'              => 'register',
+                    'source'            => 'mobile',
+                    'log'               => 'New member '.$request->name.' has been registered.',
+                    'created_at'        => date('Y-m-d H:i:s'),
+                    'updated_at'        => date('Y-m-d H:i:s'),
+                ]);
+
+                $new_member = DB::table('members')->where('id',$id)->first();
+                if($new_member){
+                    $new = new_member_create($new_member);
+
+                    //updated digital_id and ref
+                    $member = DB::table('members')->where('id',$id)->update([
+                        'digital_id'    => $new->id,
+                        'ref'           => $new->login,
+                        'status'        => 1,
+                        'registered_at' => array_key_exists('created_at',(array) $new)? $new->created_at:date('Y-m-d H:i:s'),
+                        'updated_at'    => date('Y-m-d H:i:s')
+                    ]);
+                }
+
+                //generate new token
+                $new_token = encryptcode(generateRandomString());
+                $expired_at = date('Y-m-d H:i:s',strtotime("+ 1 day"));
+
+                //created member's token into token table
+                DB::table('tokens')->insertGetId([
+                    'membership_id' => $id,
+                    'ref'           => $new->login,
+                    'token'         => $new_token,
+                    'expired_at'    => $expired_at,
+                    'created_at'    => date('Y-m-d H:i:s'),
+                    'updated_at'    => date('Y-m-d H:i:s'),
+                ]);
+
+                $data['membership_id']  = $id;
+                $data['id']             = $new->id;
+                $data['login']          = $new->login;  
+                $data['name']           = $request->name;    
+                $data['mobile']         = $request->mobile;
+                $data['token']          = $new_token;
+                $data['expired_at']     = $expired_at;
+
+                sendNewMemberNotification('Membership Registration',$request->name.' has been registered.');
+
+                //member registration successful
+                $http_code              = 201;
+                $response['success']    = 1;
+                $response['message']    = "New member has been registered";
+                $response['data']       = $data;
+            }
+        }else{
+            //required fields
+            $http_code              = 200;
+            $response['success']    = 0;
+            $response['message']    = $required;
+        }
+
+       return response()->json($response, $http_code);
     }
 }
