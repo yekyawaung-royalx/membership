@@ -405,7 +405,7 @@ class ApiController extends Controller
                     $member = DB::table('members')->where('id',$id)->update([
                         'digital_id'    => $new->id,
                         'ref'           => $new->login,
-                        'status'        => 1,
+                        'status'        => 0,
                         'registered_at' => array_key_exists('created_at',(array) $new)? $new->created_at:date('Y-m-d H:i:s'),
                         'updated_at'    => date('Y-m-d H:i:s')
                     ]);
