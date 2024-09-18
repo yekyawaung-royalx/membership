@@ -19,8 +19,11 @@ Route::post('/passcode-change', [ApiController::class, 'member_passcode_change']
 Route::post('/digital-register', [ApiController::class, 'digital_register']);
 Route::post('/update-info', [ApiController::class, 'update_info']);
 Route::post('/approved-user-level', [ApiController::class, 'approved_user_level']);
+Route::post('/rejected-user-kyc', [ApiController::class, 'rejected_user_kyc']);
 Route::post('/terminate-user', [ApiController::class, 'terminate_user']);
 Route::post('/unlock-user', [ApiController::class, 'unlock_user']);
 Route::post('/delete-member', [ApiController::class, 'delete_member']);
 Route::get('/townships', [ApiController::class, 'json_townships']);
 Route::get('/member-register', [ApiController::class, 'member_register']);
+
+

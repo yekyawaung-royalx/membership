@@ -89,8 +89,16 @@
 													</div>
 													<div class="col-md-6">
 														<div class="me-2">
-															<small class="text-muted d-block mb-1"><i class="tf-icons bx bx-wallet"></i> Points</small>
-															<h6 class="mb-0 text-capitalize fs-18 text-primary">0.00 &nbsp;</h6>
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <small class="text-muted d-block mb-1"><i class="tf-icons bx bx-wallet"></i> Points</small>
+                                                                    <h6 class="mb-0 text-capitalize fs-18 text-primary">0.00 &nbsp;</h6>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <small class="text-muted d-block mb-1"><i class="tf-icons bx bx-wallet"></i> Status</small>
+                                                                    <p>{!! kyc_status($member->status) !!}</p>
+                                                                </div>
+                                                            </div>
 														</div>
 														<div class="me-2 mt-4">
 															<small class="text-muted d-block mb-1"><i class="tf-icons bx bx-calendar"></i> Member Since</small>
@@ -198,8 +206,11 @@
 												</ul>
 												<div class="mt-4">
 													<button type="button" class="btn btn-success btn-sm show-btn-register {{ $member->ref == null? '':'hide' }}" data-bs-toggle="modal" data-bs-target="#RegisterModal" cursorshover="true">Register</button>
-													<button type="button" class="btn btn-primary btn-sm show-btn-approved btn-card-block-custom {{ $member->user_level == 2? 'hide':'' }}" data-bs-toggle="modal" data-bs-target="#ApprovedModal" cursorshover="true">Approved Lvl2</button>
-													<button type="button" class="btn btn-danger btn-sm {{ $member->ref != null? 'hide':'' }}" cursorshover="true">Rejected</button>
+                                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                                        <button type="button" class="btn btn-danger btn-sm show-btn-reject btn-card-block-custom {{ ($member->user_level == 2 || $member->status == 3)? 'hide':'' }}" data-bs-toggle="modal" data-bs-target="#RejectedModal" cursorshover="true">Rejected</button>
+													   <button type="button" class="btn btn-primary btn-sm show-btn-approved btn-card-block-custom {{ ($member->user_level == 2 || $member->status == 3)? 'hide':'' }}" data-bs-toggle="modal" data-bs-target="#ApprovedModal" cursorshover="true">Approved</button>
+													</div>
+                                                    <button type="button" class="btn btn-danger btn-sm {{ $member->ref != null? 'hide':'' }}" cursorshover="true">Rejected</button>
 													<button type="button" class="btn btn-danger btn-sm show-btn-terminate {{ $member->active == 1? '':'hide' }}" data-bs-toggle="modal" data-bs-target="#TerminateModal" cursorshover="true">Terminate</button>
 													<button type="button" class="btn btn-success btn-sm show-btn-unlock {{ $member->active == 0? '':'hide' }}" data-bs-toggle="modal" data-bs-target="#UnlockModal" cursorshover="true">Unlock</button>
 												</div>
@@ -292,16 +303,16 @@
 		</div>
 
 
-                <!-- Approved Modal -->
+        <!-- Register Modal -->
                 <div class="modal modal-top modal-md fade" id="RegisterModal" tabindex="-1">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="modalTopTitle">Are you sure to approve member to level 2?</h5>
+                                <h5 class="modal-title" id="modalTopTitle">Are you sure to register member into digital?</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                Member approved level 2.
+                                Member registered at digital system.
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-label-primary" data-bs-dismiss="modal">Close</button>
@@ -311,20 +322,39 @@
                     </div>
                 </div>  
 
-				<!-- Approved Modal -->
-				<div class="modal modal-top modal-md fade" id="ApprovedModal" tabindex="-1">
+                <!-- Approved Modal -->
+                <div class="modal modal-top modal-md fade" id="ApprovedModal" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="modalTopTitle">Are you sure to approve for member KYC?</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                Member approved level 2.
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-label-primary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary btn-confirm" value="{{ $member->digital_id }}">Register</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>  
+
+				<!-- Reject Modal -->
+				<div class="modal modal-top modal-md fade" id="RejectedModal" tabindex="-1">
 					<div class="modal-dialog">
 						<div class="modal-content">
 							<div class="modal-header">
-								<h5 class="modal-title" id="modalTopTitle">Are you sure to approve member to level 2?</h5>
+								<h5 class="modal-title" id="modalTopTitle">Are you sure to reject for member KYC?</h5>
 								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 							</div>
 							<div class="modal-body">
-								Member approved level 2.
+                                Member rejected for KYC.
 							</div>
 							<div class="modal-footer">
 								<button type="button" class="btn btn-label-primary" data-bs-dismiss="modal">Close</button>
-								<button type="button" class="btn btn-primary btn-confirm" value="{{ $member->digital_id }}">Confirm</button>
+								<button type="button" class="btn btn-primary btn-reject" value="{{ $member->digital_id }}">Confirm</button>
 							</div>
 						</div>
 					</div>
@@ -547,13 +577,48 @@
 						}
 
 						$(".show-btn-approved").addClass('hide');
+                        $(".show-btn-reject").addClass('hide');
 					}
 				});
-
 			});
 
+            $('body').delegate(".btn-reject","click",function () {
+                digital_id = $(this).val();
+                user = $("#user").val();
+                $('#RejectedModal').modal('hide');
 
+                $("#section-block").block({
+                    message:'<div class="d-flex justify-content-center"><p class="mb-0">Please wait...</p> <div class="sk-wave m-0"><div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div></div> </div>',
+                    css:{backgroundColor:"transparent",color:"#fff",border:"0"},
+                    overlayCSS:{opacity:.5}
+                });
 
+                $.ajax({
+                    url: url+'/api/rejected-user-kyc',
+                    type: 'POST',
+                    data: {
+                        'digital_id':digital_id,
+                        'user':user
+                    },
+                    success: function(data){
+                        $("#section-block").block({
+                            message:'<div class="d-flex justify-content-center"><p class="mb-0">Please wait...</p> <div class="sk-wave m-0"><div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div></div> </div>',
+                            css:{backgroundColor:"transparent",color:"#fff",border:"0"},
+                            timeout:1e3,
+                            overlayCSS:{opacity:.5}
+                        });
+                        if(data.success == 1){
+                            $("#success-message").text(data.message);
+                            $("#successToast").toast("show");
+                        }else{
+                            $("#error-message").text(data.message);
+                            $("#errorToast").toast("show");
+                        }
+                        $(".show-btn-approved").addClass('hide');
+                        $(".show-btn-reject").addClass('hide');
+                    }
+                });
+            });
 
 			$('body').delegate(".btn-register","click",function () {
 				id = $("#item").val();

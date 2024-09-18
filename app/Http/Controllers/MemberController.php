@@ -70,13 +70,15 @@ class MemberController extends Controller
 
     public function json_members_status($status){
         if($status == 'unverified'){
-            $members = DB::table('members')->select('id','digital_id','name','mobile','ref','status','active','registered_at','user_level')->where('status',0)->orderBy('id','desc')->paginate(100);
+            $members = DB::table('members')->select('id','digital_id','name','mobile','ref','status','active','registered_at','user_level')->where('status',0)->orderBy('id','desc')->paginate(200);
         }else if($status == 'processing'){
-            $members = DB::table('members')->select('id','digital_id','name','mobile','ref','status','active','registered_at','user_level')->where('status',1)->orderBy('id','desc')->paginate(100);
+            $members = DB::table('members')->select('id','digital_id','name','mobile','ref','status','active','registered_at','user_level')->where('status',1)->orderBy('id','desc')->paginate(200);
         }else if($status == 'verified'){
-            $members = DB::table('members')->select('id','digital_id','name','mobile','ref','status','active','registered_at','user_level')->where('status',2)->orderBy('id','desc')->paginate(100);
+            $members = DB::table('members')->select('id','digital_id','name','mobile','ref','status','active','registered_at','user_level')->where('status',2)->orderBy('id','desc')->paginate(200);
+        }else if($status == 'rejected'){
+            $members = DB::table('members')->select('id','digital_id','name','mobile','ref','status','active','registered_at','user_level')->where('status',3)->orderBy('id','desc')->paginate(200);
         }else{
-            $members = DB::table('members')->select('id','digital_id','name','mobile','ref','status','active','registered_at','user_level')->orderBy('id','desc')->paginate(100);
+            $members = DB::table('members')->select('id','digital_id','name','mobile','ref','status','active','registered_at','user_level')->orderBy('id','desc')->paginate(200);
         }
         
 

@@ -32,6 +32,12 @@
 		                    <div>Verified Members</div>
 		                </a>
 		            </li>
+                    <li class="menu-item {{ request()->is('members/processing') ? 'active' : '' }}">
+                        <a href="{{ url('members/rejected') }}" class="menu-link">
+                            <i class="tf-icons bx bx-user me-1"></i>
+                            <div>Rejected Members</div>
+                        </a>
+                    </li>
                     <li class="menu-item {{ request()->is('members/all') ? 'active' : '' }}">
 			            <a href="{{ url('members/all') }}" class="menu-link">
 			                <i class="tf-icons bx bx-user me-1"></i>

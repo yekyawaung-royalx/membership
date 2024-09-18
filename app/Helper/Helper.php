@@ -258,8 +258,10 @@
             return '<span class="badge rounded-pill bg-danger text-capitalized">Unverified</span>';
         }else if($status == 1){
             return '<span class="badge rounded-pill bg-warning text-capitalized">Processing</span>';
-        }else{
+        }else if($status == 2){
             return '<span class="badge rounded-pill bg-success text-capitalized">Verified</span>';
+        }else{
+            return '<span class="badge rounded-pill bg-danger text-capitalized">Rejected</span>';
         }
     }
 
@@ -268,8 +270,10 @@
             return 'Unverified';
         }else if($status == 1){
             return 'Processing';
-        }else{
+        }else if($status == 2){
             return 'Verified';
+        }else{
+            return 'Rejected';
         }
     }
 

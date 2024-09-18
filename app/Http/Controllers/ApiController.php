@@ -681,6 +681,50 @@ class ApiController extends Controller
         return response()->json($response);
     }
 
+    /* rejected user level upgrade */
+    public function rejected_user_kyc(Request $request){
+        $response = array();
+        $check = 0;
+
+        $member = DB::table('members')->where('digital_id',$request->digital_id)->first();
+        if($member){
+            if($member->user_level == 1){
+                //upgrade member level
+                DB::table('members')->where('digital_id',$request->digital_id)->update([
+                    'status'    => 3,
+                    'updated_at'    => date('Y-m-d H:i:s')
+                ]);
+
+                //saved member action logs
+                $id = DB::table('member_logs')->insertGetId([
+                    'membership_id'     => $member->id,
+                    'slug'              => 'account',
+                    'source'            => 'web',
+                    'log'               => $member->name.' has been rejected lvl 2 by '.$request->user.'.',
+                    'created_at'        => date('Y-m-d H:i:s'),
+                    'updated_at'        => date('Y-m-d H:i:s'),
+                ]);
+
+                $http_code              = 200;
+                $response['success']    = 1;
+                $response['level']      = 2;
+                $response['message']    = 'Member rejected to upgrade level 2.';
+            }else{
+
+                $http_code              = 200;
+                $response['success']    = 0;
+                $response['level']      = 2;
+                $response['message']    = 'Member already level 2.';
+            }
+        }else{
+            $http_code           = 401;
+            $response['success'] = 0;
+            $response['message'] = 'Member not found.';
+        }
+        
+        return response()->json($response);
+    }
+
     /* update member information */
     public function update_info(Request $request){
         $response = array();
@@ -996,4 +1040,7 @@ class ApiController extends Controller
 
        return response()->json($response, $http_code);
     }
+
+
+
 }

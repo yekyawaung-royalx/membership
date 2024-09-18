@@ -5,6 +5,8 @@ function member_status(status){
             return '<span class="badge rounded-pill bg-warning text-capitalized">Processing</span>';
         }else if(status == 2 ) {
             return '<span class="badge rounded-pill bg-success text-capitalized">Verified</span>';
+        }else if(status == 3 ) {
+            return '<span class="badge rounded-pill bg-danger text-capitalized">Rejected</span>';
         }else{
             return 'Unknow';
         }
