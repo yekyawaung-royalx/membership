@@ -706,6 +706,11 @@ class ApiController extends Controller
                 'updated_at'    => date('Y-m-d H:i:s'),
             ]);
 
+            //state
+            $state = DB::table('regions')->select('digital_id','en_name')->where('id',$request->state_id)->first();
+            //township
+            $township = DB::table('townships')->select('digital_id','digital_city_id','en_name')->where('id',$request->township_id)->first();
+
             //updated current member info
             DB::table('members')->where('id',$request->membership_id)->update([
                 'name'              => $request->name? $request->name:$member->name,
@@ -713,8 +718,17 @@ class ApiController extends Controller
                 'dob'               => $request->dob? $request->dob:$member->dob,
                 'gender'            => $request->gender? $request->gender:$member->gender,
                 'nrc'               => $request->nrc? $request->nrc:$member->nrc,
-                'state_name'        => $request->state? $request->state_name:$member->state_name,
-                'township_name'     => $request->township? $request->township_name:$member->township_name,
+
+                'state_id'        => $request->state_id? $request->state_id:$member->state_id,
+                'state_id'        => $request->state_id? $request->state_id:$member->state_id,
+                'township_id'     => $request->township_id? $request->township_id:$member->township_name,
+
+                'state_id'              => $request->state_id? $request->state_id:$member->state_id,
+                'state_name'        => $request->state_id? $state->state_name:$member->state_name,
+                'city_id'               => $request->township_id? $township->digital_city_id:$member->township_id,
+                'township_id'       => $request->township_id? $township->digital_id:$member->township_id,
+                'township_name'     => $request->state_id? $township->en_name:$member->township_name,
+
                 'address'           => $request->address? $request->address:$member->address,
                 'user_level'        => $request->user_level? $request->user_level:$member->user_level,
                 'selfie_photo'   => $request->selfie_photo? $request->selfie_photo:$member->selfie_photo,
