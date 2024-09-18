@@ -762,17 +762,11 @@ class ApiController extends Controller
                 'dob'               => $request->dob? $request->dob:$member->dob,
                 'gender'            => $request->gender? $request->gender:$member->gender,
                 'nrc'               => $request->nrc? $request->nrc:$member->nrc,
-
-                'state_id'        => $request->state_id? $request->state_id:$member->state_id,
-                'state_id'        => $request->state_id? $request->state_id:$member->state_id,
-                'township_id'     => $request->township_id? $request->township_id:$member->township_name,
-
                 'state_id'              => $request->state_id? $request->state_id:$member->state_id,
-                'state_name'        => $request->state_id? $state->state_name:$member->state_name,
+                'state_name'        => $request->state_id? $state->en_name:$member->state_name,
                 'city_id'               => $request->township_id? $township->digital_city_id:$member->township_id,
                 'township_id'       => $request->township_id? $township->digital_id:$member->township_id,
                 'township_name'     => $request->state_id? $township->en_name:$member->township_name,
-
                 'address'           => $request->address? $request->address:$member->address,
                 'user_level'        => $request->user_level? $request->user_level:$member->user_level,
                 'selfie_photo'   => $request->selfie_photo? $request->selfie_photo:$member->selfie_photo,
