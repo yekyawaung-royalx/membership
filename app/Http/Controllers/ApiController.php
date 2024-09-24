@@ -729,8 +729,11 @@ class ApiController extends Controller
     public function update_info(Request $request){
         $response = array();
 
+
         $member = DB::table('members')->where('id',$request->membership_id)->first();
         if($member){
+            $status = $request->action == 'edit'? $member->status:1;
+
             //saved previous version in histories
             DB::table('histories')->insertGetId([
                 'membership_id' => $member->id,
@@ -774,7 +777,7 @@ class ApiController extends Controller
                 'nrc_back_photo'    => $request->nrc_back_photo? $request->nrc_back_photo:$member->nrc_back_photo,
                 'selfie_photo'      => $request->selfie_photo? $request->selfie_photo:$member->selfie_photo,
                 'active'            => $request->active? $request->active:$member->active,
-                'status'            => $member->user_level == 2? 2:1,
+                'status'            => $status,
                 'updated_at'        => date('Y-m-d H:i:s'),
             ]);
 
@@ -1035,6 +1038,60 @@ class ApiController extends Controller
        return response()->json($response, $http_code);
     }
 
+    public function member_status(Request $request){
+        $response   = array();
+        $required   = array();
+        $validate   = 2;
+
+        $request->id =='' ? array_push($required,'id is required'):$validate -= 1;
+        $request->active  =='' ? array_push($required,'active is required'):$validate -= 1;
+
+        $token = $request->header('token');
+        //check token in header
+        if($token){
+            if($token == 'fPwz1YKMCWLkKQn3j64Qa0Y43zJ41zcbpmm6ywua8X0='){
+                $member = DB::table('members')->where('digital_id',$request->id)->first();
+                if($member){
+                    //update user status
+                    DB::table('members')->where('id',$id)->update([
+                        'active'      => $request->active,
+                        'updated_at'    => date('Y-m-d H:i:s'),
+                     ]);
+        
+                     //saved member action logs
+                    $id = DB::table('member_logs')->insertGetId([
+                        'membership_id'     => $member->id,
+                        'slug'                  => 'account',
+                        'source'            => 'digital',
+                        'log'                   => 'Member status has been changed from digital.',
+                         'created_at'        => date('Y-m-d H:i:s'),
+                         'updated_at'        => date('Y-m-d H:i:s'),
+                    ]);
+        
+                    $http_code              = 200;
+                    $response['success']    = 1;
+                    $response['message']    ="Member status has been changed.";
+                }else{
+                    //invalid member info
+                    $http_code              = 401;
+                    $response['success']    = 0;
+                    $response['message']    = "User not found in our system.";
+                }
+            }else{
+                //member token expired
+                $http_code              = 401;
+                $response['success']    = 1;
+                $response['message']    = "Token is invalid.";
+            }
+        }else{
+            //missing token in header
+            $http_code              = 401;
+            $response['success']    = 0;
+            $response['message']    = "Missing token in header.";
+        }
+
+        return response()->json($response,$http_code);
+    }
 
 
 }
