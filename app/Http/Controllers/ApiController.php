@@ -810,14 +810,14 @@ class ApiController extends Controller
                 'membership_id'     => $member->id,
                 'slug'              => 'account',
                 'source'            => 'web',
-                'log'               => $member->name.' has been terminated by '.$request->user.'.',
+                'log'               => $member->name.' has been suspended by '.$request->user.'.',
                 'created_at'        => date('Y-m-d H:i:s'),
                 'updated_at'        => date('Y-m-d H:i:s'),
             ]);
 
             $http_code           = 200;
             $response['success'] = 1;
-            $response['message'] = 'Member has been terminated.';
+            $response['message'] = 'Member has been suspended.';
         }else{
 
             $http_code           = 401;

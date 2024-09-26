@@ -207,11 +207,11 @@
 												<div class="mt-4">
 													<button type="button" class="btn btn-success btn-sm show-btn-register {{ $member->ref == null? '':'hide' }}" data-bs-toggle="modal" data-bs-target="#RegisterModal" cursorshover="true">Register</button>
                                                     <div class="btn-group" role="group" aria-label="Basic example">
-                                                        <button type="button" class="btn btn-danger btn-sm show-btn-reject btn-card-block-custom {{ ($member->user_level == 2 || $member->status == 3)? 'hide':'' }}" data-bs-toggle="modal" data-bs-target="#RejectedModal" cursorshover="true">Rejected</button>
-													   <button type="button" class="btn btn-primary btn-sm show-btn-approved btn-card-block-custom {{ ($member->user_level == 2 || $member->status == 3)? 'hide':'' }}" data-bs-toggle="modal" data-bs-target="#ApprovedModal" cursorshover="true">Approved</button>
+                                                        <button type="button" class="btn btn-danger btn-sm show-btn-reject btn-card-block-custom {{ ($member->user_level == 2 || $member->status == 0 || $member->status == 3)? 'hide':'' }}" data-bs-toggle="modal" data-bs-target="#RejectedModal" cursorshover="true">Rejected</button>
+													   <button type="button" class="btn btn-primary btn-sm show-btn-approved btn-card-block-custom {{ ($member->user_level == 2 || $member->status == 0 || $member->status == 3)? 'hide':'' }}" data-bs-toggle="modal" data-bs-target="#ApprovedModal" cursorshover="true">Approved</button>
 													</div>
                                                     <button type="button" class="btn btn-danger btn-sm {{ $member->ref != null? 'hide':'' }}" cursorshover="true">Rejected</button>
-													<button type="button" class="btn btn-danger btn-sm show-btn-terminate {{ $member->active == 1? '':'hide' }}" data-bs-toggle="modal" data-bs-target="#TerminateModal" cursorshover="true">Terminate</button>
+													<button type="button" class="btn btn-danger btn-sm show-btn-terminate {{ $member->active == 1? '':'hide' }}" data-bs-toggle="modal" data-bs-target="#TerminateModal" cursorshover="true">Suspend</button>
 													<button type="button" class="btn btn-success btn-sm show-btn-unlock {{ $member->active == 0? '':'hide' }}" data-bs-toggle="modal" data-bs-target="#UnlockModal" cursorshover="true">Unlock</button>
 												</div>
 											</div>
@@ -354,7 +354,7 @@
 							</div>
 							<div class="modal-footer">
 								<button type="button" class="btn btn-label-primary" data-bs-dismiss="modal">Close</button>
-								<button type="button" class="btn btn-primary btn-reject" value="{{ $member->digital_id }}">Confirm</button>
+								<button type="button" class="btn btn-danger btn-reject" value="{{ $member->digital_id }}">Confirm</button>
 							</div>
 						</div>
 					</div>
@@ -365,15 +365,15 @@
 					<div class="modal-dialog">
 						<div class="modal-content">
 							<div class="modal-header">
-								<h5 class="modal-title" id="modalTopTitle">Are you sure to register member at digital system?</h5>
+								<h5 class="modal-title" id="modalTopTitle">Are you sure to suspend member?</h5>
 								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 							</div>
 							<div class="modal-body">
-								Member data register at digital system.
+								We suspend member for member app.
 							</div>
 							<div class="modal-footer">
 								<button type="button" class="btn btn-label-primary" data-bs-dismiss="modal">Close</button>
-								<button type="button" class="btn btn-danger btn-terminate">Terminate</button>
+								<button type="button" class="btn btn-danger btn-terminate">Suspend</button>
 							</div>
 						</div>
 					</div>
@@ -702,6 +702,7 @@
 
 			$('body').delegate(".btn-unlock","click",function () {
 				id = $("#item").val();
+                user = $("#user").val();
 				$('#UnlockModal').modal('hide');
 				$("#section-block").block({
 					message:'<div class="d-flex justify-content-center"><p class="mb-0">Please wait...</p> <div class="sk-wave m-0"><div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div></div> </div>',
