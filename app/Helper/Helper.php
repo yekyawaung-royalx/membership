@@ -118,6 +118,7 @@
         $response['unverified']    = array();
         $response['processing']   = array();
         $response['verified']   = array();
+        $response['rejected']   = array();
 
         if($params == 'today'){
             $status = DB::table('members as m')
@@ -133,9 +134,23 @@
         }
 
         foreach ($status as $key => $value) {
-            $key == 0 ? $response['unverified'] = $value:$response['unverified'] = array();
-            $key == 1 ? $response['processing'] = $value:$response['processing'] = array();
-            $key == 2? $response['verified'] = $value:$response['verified'] = array();
+            // $value->status == 0 ? $response['unverified'] = $value:$response['unverified'] = array();
+            // $value->status == 1 ? $response['processing'] = $value:$response['processing'] = array();
+            // $value->status == 2? $response['verified'] = $value:$response['verified'] = array();
+            // $value->status == 3? $response['rejected'] = $value:$response['rejected'] = array();
+
+            if($value->status == 0){
+                $response['unverified'] = $value->total;
+            }
+                if($value->status == 1){
+                    $response['processing'] = $value->total;
+                }
+                if($value->status == 2){
+                    $response['verified'] = $value->total;
+                }
+                if($value->status == 3){
+                    $response['rejected'] = $value->total;
+                }
         }
 
         return $response;

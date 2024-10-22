@@ -53,34 +53,17 @@
                                 </div>
 						<div class="row">
 							<div class="col-sm-6 col-lg-3 mb-4">
-							    	<div class="card card-border-shadow-primary h-100">
-								      	<div class="card-body">
-									        <div class="d-flex align-items-center mb-2 pb-1">
-									          	<div class="avatar me-2">
-									            		<span class="avatar-initial rounded bg-label-primary"><i class="bx bxs-user"></i></span>
-									          	</div>
-									          	<h4 class="ms-1 mb-0 total-count">--</h4>
-									        </div>
-									        <p class="mb-1">Total Members</p>
-									        <p class="mb-0">
-									          	<span class="fw-medium me-1">0</span>
-									          	<small class="text-muted">(Today)</small>
-									        </p>
-									</div>
-							    	</div>
-							</div>
-							<div class="col-sm-6 col-lg-3 mb-4">
 							    	<div class="card card-border-shadow-warning h-100">
 								      	<div class="card-body">
 									        <div class="d-flex align-items-center mb-2 pb-1">
 										        <div class="avatar me-2">
-										            	<span class="avatar-initial rounded bg-label-danger"><i class='bx bxs-user'></i></span>
+										            	<span class="avatar-initial rounded bg-label-warning"><i class='bx bxs-user'></i></span>
 										        </div>
-									          	<h4 class="ms-1 mb-0 unverified-count">{{ member_status('all')['unverified']? member_status('all')['unverified']->total:0 }}</h4>
+									          	<h4 class="ms-1 mb-0 unverified-count">{{ member_status('all')['unverified']? member_status('all')['unverified']:0 }} <span class="text-muted text-italic">of</span> <span class="total-count">00</span></h4>
 									        </div>
 									        <p class="mb-1">Unverified Members</p>
 									        <p class="mb-0">
-									          	<span class="fw-medium me-1">{{ member_status('today')['unverified']? member_status('today')['unverified']->total:0 }}</span>
+									          	<span class="fw-medium me-1">{{ member_status('today')['unverified']? member_status('today')['unverified']:0 }}</span>
 									          	<small class="text-muted">(Today)</small>
 									        </p>
 							      		</div>
@@ -91,13 +74,13 @@
 								      	<div class="card-body">
 									        <div class="d-flex align-items-center mb-2 pb-1">
 									          	<div class="avatar me-2">
-									            		<span class="avatar-initial rounded bg-label-warning"><i class='bx bxs-user'></i></span>
+									            		<span class="avatar-initial rounded bg-label-primary"><i class='bx bxs-user'></i></span>
 									          	</div>
-									          	<h4 class="ms-1 mb-0 processing-count">{{ member_status('all')['processing']? member_status('all')['processing']->total:0 }}</h4>
+									          	<h4 class="ms-1 mb-0 processing-count">{{ member_status('all')['processing']? member_status('all')['processing']:0 }} <span class="text-muted text-italic">of</span> <span class="total-count">00</span></h4>
 									        </div>
 								        	<p class="mb-1">Processing Members</p>
 								        	<p class="mb-0">
-								          		<span class="fw-medium me-1">{{ member_status('today')['processing']? member_status('today')['processing']->total:0 }}</span>
+								          		<span class="fw-medium me-1">{{ member_status('today')['processing']? member_status('today')['processing']:0 }}</span>
 								          		<small class="text-muted">(Today)</small>
 								        	</p>
 								      	</div>
@@ -110,16 +93,33 @@
 									          	<div class="avatar me-2">
 									            		<span class="avatar-initial rounded bg-label-success"><i class='bx bxs-user'></i></span>
 									          	</div>
-									          	<h4 class="ms-1 mb-0 verified-count">{{ member_status('all')['verified']? member_status('all')['verified']->total:0 }}</h4>
+									          	<h4 class="ms-1 mb-0 verified-count">{{ member_status('all')['verified']? member_status('all')['verified']:0 }} <span class="text-muted text-italic">of</span> <span class="total-count">00</span></h4>
 									        </div>
 								        	<p class="mb-1">Verified Members</p>
 								        	<p class="mb-0">
-								          		<span class="fw-medium me-1">{{ member_status('today')['verified']? member_status('today')['verified']->total:0 }}</span>
+								          		<span class="fw-medium me-1">{{ member_status('today')['verified']? member_status('today')['verified']:0 }}</span>
 								          		<small class="text-muted">(Today)</small>
 								        	</p>
 								      	</div>
 							    	</div>
 							</div>
+                            <div class="col-sm-6 col-lg-3 mb-4">
+                                    <div class="card card-border-shadow-danger h-100">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center mb-2 pb-1">
+                                                <div class="avatar me-2">
+                                                        <span class="avatar-initial rounded bg-label-danger"><i class="bx bxs-user"></i></span>
+                                                </div>
+                                                <h4 class="ms-1 mb-0 rejected-count">{{ member_status('all')['rejected']? member_status('all')['rejected']:0 }} <span class="text-muted text-italic">of</span> <span class="total-count">00</span></h4>
+                                            </div>
+                                            <p class="mb-1">Total Members</p>
+                                            <p class="mb-0">
+                                                <span class="fw-medium me-1">{{ member_status('today')['rejected']? member_status('today')['rejected']:0 }}</span>
+                                                <small class="text-muted">(Today)</small>
+                                            </p>
+                                    </div>
+                                    </div>
+                            </div>
 						</div>
 						<div class="row">
 						  	<div class="col-xxl-8 mb-4 order-5 order-xxl-0">
@@ -219,7 +219,8 @@
                 unverified     = parseInt($(".unverified-count").text());
                 processing    = parseInt($(".processing-count").text());
                 verified    = parseInt($(".verified-count").text());
-                total       = unverified + processing + verified;
+                rejected    = parseInt($(".rejected-count").text());
+                total       = unverified + processing + verified + rejected;
 
                 $(".total-count").text(total);
             });
