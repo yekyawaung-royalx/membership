@@ -134,23 +134,18 @@
         }
 
         foreach ($status as $key => $value) {
-            // $value->status == 0 ? $response['unverified'] = $value:$response['unverified'] = array();
-            // $value->status == 1 ? $response['processing'] = $value:$response['processing'] = array();
-            // $value->status == 2? $response['verified'] = $value:$response['verified'] = array();
-            // $value->status == 3? $response['rejected'] = $value:$response['rejected'] = array();
-
             if($value->status == 0){
                 $response['unverified'] = $value->total;
             }
-                if($value->status == 1){
-                    $response['processing'] = $value->total;
-                }
-                if($value->status == 2){
-                    $response['verified'] = $value->total;
-                }
-                if($value->status == 3){
-                    $response['rejected'] = $value->total;
-                }
+            if($value->status == 1){
+                $response['processing'] = $value->total;
+             }
+            if($value->status == 2){
+                $response['verified'] = $value->total;
+            }
+            if($value->status == 3){
+                $response['rejected'] = $value->total;
+            }
         }
 
         return $response;
