@@ -316,7 +316,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-label-primary" data-bs-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary btn-register" value="{{ $member->digital_id }}">Register</button>
+                                <button type="button" class="btn btn-primary btn-register" value="{{ $member->digital_id }}">Confirm</button>
                             </div>
                         </div>
                     </div>
@@ -335,7 +335,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-label-primary" data-bs-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary btn-confirm" value="{{ $member->digital_id }}">Register</button>
+                                <button type="button" class="btn btn-primary btn-confirm" value="{{ $member->digital_id }}">Confirm</button>
                             </div>
                         </div>
                     </div>
