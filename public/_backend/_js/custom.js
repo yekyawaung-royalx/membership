@@ -1,8 +1,8 @@
 function member_status(status){
         if(status == 0) {
-            return '<span class="badge rounded-pill bg-danger text-capitalized">Unverified</span>';
+            return '<span class="badge rounded-pill bg-warning text-capitalized">Unverified</span>';
         }else if(status == 1) {
-            return '<span class="badge rounded-pill bg-warning text-capitalized">Processing</span>';
+            return '<span class="badge rounded-pill bg-primary text-capitalized">Processing</span>';
         }else if(status == 2 ) {
             return '<span class="badge rounded-pill bg-success text-capitalized">Verified</span>';
         }else if(status == 3 ) {

@@ -53,7 +53,7 @@
                                 </div>
 						<div class="row">
 							<div class="col-sm-6 col-lg-3 mb-4">
-							    	<div class="card card-border-shadow-warning h-100">
+							    	<a href="{{ url('members/unverified') }}" class="card card-border-shadow-warning h-100">
 								      	<div class="card-body">
 									        <div class="d-flex align-items-center mb-2 pb-1">
 										        <div class="avatar me-2">
@@ -61,16 +61,16 @@
 										        </div>
 									          	<h4 class="ms-1 mb-0 unverified-count">{{ member_status('all')['unverified']? member_status('all')['unverified']:0 }} <span class="text-muted text-italic">of</span> <span class="total-count">00</span></h4>
 									        </div>
-									        <p class="mb-1">Unverified Members</p>
+									        <p class="mb-1 text-warning">Unverified Members</p>
 									        <p class="mb-0">
-									          	<span class="fw-medium me-1">{{ member_status('today')['unverified']? member_status('today')['unverified']:0 }}</span>
+									          	<span class="fw-medium me-1 text-warning">{{ member_status('today')['unverified']? member_status('today')['unverified']:0 }}</span>
 									          	<small class="text-muted">(Today)</small>
 									        </p>
 							      		</div>
-							    	</div>
+							    	</a>
 							</div>
 							<div class="col-sm-6 col-lg-3 mb-4">
-							    	<div class="card card-border-shadow-success h-100">
+							    	<a href="{{ url('members/processing') }}" class="card card-border-shadow-primary h-100">
 								      	<div class="card-body">
 									        <div class="d-flex align-items-center mb-2 pb-1">
 									          	<div class="avatar me-2">
@@ -78,16 +78,16 @@
 									          	</div>
 									          	<h4 class="ms-1 mb-0 processing-count">{{ member_status('all')['processing']? member_status('all')['processing']:0 }} <span class="text-muted text-italic">of</span> <span class="total-count">00</span></h4>
 									        </div>
-								        	<p class="mb-1">Processing Members</p>
+								        	<p class="mb-1 text-primary">Processing Members</p>
 								        	<p class="mb-0">
-								          		<span class="fw-medium me-1">{{ member_status('today')['processing']? member_status('today')['processing']:0 }}</span>
+								          		<span class="fw-medium me-1 text-primary">{{ member_status('today')['processing']? member_status('today')['processing']:0 }}</span>
 								          		<small class="text-muted">(Today)</small>
 								        	</p>
 								      	</div>
-							    	</div>
+							    	</a>
 							</div>
 							<div class="col-sm-6 col-lg-3 mb-4">
-							    	<div class="card card-border-shadow-danger h-100">
+							    	<a href="{{ url('members/verified') }}" class="card card-border-shadow-success h-100">
 								      	<div class="card-body">
 									        <div class="d-flex align-items-center mb-2 pb-1">
 									          	<div class="avatar me-2">
@@ -95,16 +95,16 @@
 									          	</div>
 									          	<h4 class="ms-1 mb-0 verified-count">{{ member_status('all')['verified']? member_status('all')['verified']:0 }} <span class="text-muted text-italic">of</span> <span class="total-count">00</span></h4>
 									        </div>
-								        	<p class="mb-1">Verified Members</p>
+								        	<p class="mb-1 text-success">Verified Members</p>
 								        	<p class="mb-0">
-								          		<span class="fw-medium me-1">{{ member_status('today')['verified']? member_status('today')['verified']:0 }}</span>
+								          		<span class="fw-medium me-1 text-success">{{ member_status('today')['verified']? member_status('today')['verified']:0 }}</span>
 								          		<small class="text-muted">(Today)</small>
 								        	</p>
 								      	</div>
-							    	</div>
+							    	</a>
 							</div>
                             <div class="col-sm-6 col-lg-3 mb-4">
-                                    <div class="card card-border-shadow-danger h-100">
+                                    <a href="{{ url('members/rejected') }}" class="card card-border-shadow-danger h-100">
                                         <div class="card-body">
                                             <div class="d-flex align-items-center mb-2 pb-1">
                                                 <div class="avatar me-2">
@@ -112,13 +112,13 @@
                                                 </div>
                                                 <h4 class="ms-1 mb-0 rejected-count">{{ member_status('all')['rejected']? member_status('all')['rejected']:0 }} <span class="text-muted text-italic">of</span> <span class="total-count">00</span></h4>
                                             </div>
-                                            <p class="mb-1">Total Members</p>
+                                            <p class="mb-1 text-danger">Total Members</p>
                                             <p class="mb-0">
-                                                <span class="fw-medium me-1">{{ member_status('today')['rejected']? member_status('today')['rejected']:0 }}</span>
+                                                <span class="fw-medium me-1 text-danger">{{ member_status('today')['rejected']? member_status('today')['rejected']:0 }}</span>
                                                 <small class="text-muted">(Today)</small>
                                             </p>
                                     </div>
-                                    </div>
+                                    </a>
                             </div>
 						</div>
 						<div class="row">
