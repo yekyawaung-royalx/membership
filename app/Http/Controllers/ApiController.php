@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class ApiController extends Controller
 {
@@ -387,15 +388,7 @@ class ApiController extends Controller
                     'updated_at'        => date('Y-m-d H:i:s'),
                 ]);
 
-                //saved member action logs
-                DB::table('member_logs')->insertGetId([
-                    'membership_id'     => $id,
-                    'slug'              => 'register',
-                    'source'            => 'mobile',
-                    'log'               => 'New member '.$request->name.' has been registered.',
-                    'created_at'        => date('Y-m-d H:i:s'),
-                    'updated_at'        => date('Y-m-d H:i:s'),
-                ]);
+
 
                 $new_member = DB::table('members')->where('id',$id)->first();
                 if($new_member){
@@ -410,6 +403,17 @@ class ApiController extends Controller
                         'updated_at'    => date('Y-m-d H:i:s')
                     ]);
                 }
+
+                //saved member action logs
+                DB::table('member_logs')->insertGetId([
+                    'membership_id'     => $id,
+                    'ref'     => $new->login,
+                    'slug'              => 'register',
+                    'source'            => 'mobile',
+                    'log'               => 'New member '.$request->name.' has been registered.',
+                    'created_at'        => date('Y-m-d H:i:s'),
+                    'updated_at'        => date('Y-m-d H:i:s'),
+                ]);
 
                 //generate new token
                 $new_token = encryptcode(generateRandomString());
@@ -434,6 +438,9 @@ class ApiController extends Controller
                 $data['expired_at']     = $expired_at;
 
                 sendNewMemberNotification('Membership Registration',$request->name.' has been registered.');
+
+                //save register into laravel.log
+                Log::info((array)$new);
 
                 //member registration successful
                 $http_code              = 201;
@@ -686,7 +693,11 @@ class ApiController extends Controller
         $response = array();
         $check = 0;
 
+        $issue = implode(',', $request->issues);
+
         $member = DB::table('members')->where('digital_id',$request->digital_id)->first();
+        $log = DB::table('rejected_logs')->where('ref',$request->digital_id)->first();
+
         if($member){
             if($member->user_level == 1){
                 //upgrade member level
@@ -697,13 +708,33 @@ class ApiController extends Controller
 
                 //saved member action logs
                 $id = DB::table('member_logs')->insertGetId([
-                    'membership_id'     => $member->id,
+                    'ref'     => $member->id,
                     'slug'              => 'account',
                     'source'            => 'web',
                     'log'               => $member->name.' has been rejected lvl 2 by '.$request->user.'.',
                     'created_at'        => date('Y-m-d H:i:s'),
                     'updated_at'        => date('Y-m-d H:i:s'),
                 ]);
+
+                //saved member action logs
+                if($log){
+                    //update
+                    $id = DB::table('rejected_logs')->where('ref',$request->digital_id)->update([
+                        'ref'     => $member->id,
+                        'rules'              => $issue,
+                        'created_at'        => date('Y-m-d H:i:s'),
+                        'updated_at'        => date('Y-m-d H:i:s'),
+                    ]);
+                }else{
+                    //create
+                    $id = DB::table('rejected_logs')->insertGetId([
+                        'ref'     => $member->id,
+                        'rules'              => $issue,
+                        'created_at'        => date('Y-m-d H:i:s'),
+                        'updated_at'        => date('Y-m-d H:i:s'),
+                    ]);
+                }
+                
 
                 $http_code              = 200;
                 $response['success']    = 1;
@@ -798,7 +829,7 @@ class ApiController extends Controller
     public function terminate_user(Request $request){
         $response = array();
 
-        $member = DB::table('members')->where('id',$request->id)->first();
+        $member = DB::table('members')->select('id','name','ref')->where('id',$request->id)->first();
         if($member){
             DB::table('members')->where('id',$member->id)->update([
                 'active'        => 0,
@@ -808,6 +839,7 @@ class ApiController extends Controller
             //saved member action logs
             $id = DB::table('member_logs')->insertGetId([
                 'membership_id'     => $member->id,
+                'ref'     => $member->ref,
                 'slug'              => 'account',
                 'source'            => 'web',
                 'log'               => $member->name.' has been suspended by '.$request->user.'.',
@@ -832,7 +864,7 @@ class ApiController extends Controller
     public function unlock_user(Request $request){
         $response = array();
 
-        $member = DB::table('members')->select('id','name')->where('id',$request->id)->first();
+        $member = DB::table('members')->select('id','name','ref')->where('id',$request->id)->first();
         if($member){
             DB::table('members')->where('id',$member->id)->update([
                 'active'        => 1,
@@ -842,7 +874,8 @@ class ApiController extends Controller
             //saved member action logs
             $id = DB::table('member_logs')->insertGetId([
                 'membership_id'     => $member->id,
-                'slug'              => 'account',
+                'ref'     => $member->ref,
+                'slug'              => 'unlocked-acc',
                 'source'            => 'web',
                 'log'               => $member->name.' has been unlocked by '.$request->user.'.',
                 'created_at'        => date('Y-m-d H:i:s'),
@@ -1088,6 +1121,53 @@ class ApiController extends Controller
             $http_code              = 401;
             $response['success']    = 0;
             $response['message']    = "Missing token in header.";
+        }
+
+        return response()->json($response,$http_code);
+    }
+
+    public function rejected_rules(Request $request){
+        $log = DB::table('rejected_logs')->where('ref',$request->ref)->first();
+
+        return response()->json($log);
+    }
+
+    public function member_point(Request $request){
+        $response = array();
+        $ref = DB::table('members')->select('ref','points')->where('ref',$request->ref)->first();
+        $points = 0;
+        $pay_points = 10;
+
+        if($ref){
+            $points += $pay_points;
+
+            $waybill = DB::table('point_histories')->select('waybill_no')->where('waybill_no',$request->waybill_no)->first();
+            if(!$waybill){
+                DB::table('point_histories')->insertGetId([
+                    'ref'                   => $request->ref,
+                    'waybill_no'      => $request->waybill_no,
+                    'points'            => $pay_points,
+                    'created_at'        => date('Y-m-d H:i:s'),
+                    'updated_at'        => date('Y-m-d H:i:s'),
+                ]);
+
+                //update member points
+                DB::table('members')->where('ref',$request->ref)->update([
+                    'points' => $points
+                ]);
+
+                $http_code              = 200;
+                $response['success']    = 1;
+                $response['message']    = $pay_points." point has been added for '.$request->ref.'.";
+            }else{
+                $http_code              = 405;
+                $response['success']    = 0;
+                $response['message']    = "Waybill is already exists.";
+            }
+        }else{
+            $http_code              = 401;
+            $response['success']    = 0;
+            $response['message']    = "Member not found.";
         }
 
         return response()->json($response,$http_code);

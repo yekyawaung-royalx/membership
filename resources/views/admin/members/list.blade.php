@@ -68,18 +68,6 @@
 				                </div>
 				            </div>
 							<div class="card mb-4">
-								<div class="card-body loading text-center">
-									<h6>Please wait patiently</h6>
-									<div class="spinner-grow text-primary" role="status">
-										<span class="visually-hidden">Loading...</span>
-									</div>
-									<div class="spinner-grow text-primary" role="status">
-										<span class="visually-hidden">Loading...</span>
-									</div>
-									<div class="spinner-grow text-primary" role="status">
-										<span class="visually-hidden">Loading...</span>
-									</div>
-								</div>
 				                <div class="card-body results hide">
 					                <div class="table-responsive text-nowrap">
 					                    <table class="table">
@@ -105,6 +93,18 @@
 										</div>
 					                </div>
 				                </div>
+                                <div class="card-body loading text-center">
+                                    <h6>Please wait patiently</h6>
+                                    <div class="spinner-grow text-primary" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                    <div class="spinner-grow text-primary" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                    <div class="spinner-grow text-primary" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                </div>
 				            </div>
 		               	</div>
 		          		<!-- / Content -->
