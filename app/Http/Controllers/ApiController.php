@@ -394,6 +394,9 @@ class ApiController extends Controller
                 if($new_member){
                     $new = new_member_create($new_member);
 
+                    //save register into laravel.log
+                    Log::info((array)$new);
+
                     //updated digital_id and ref
                     $member = DB::table('members')->where('id',$id)->update([
                         'digital_id'    => $new->id,
@@ -439,8 +442,7 @@ class ApiController extends Controller
                 $data['token']          = $new_token;
                 $data['expired_at']     = $expired_at;
 
-                //save register into laravel.log
-                Log::info((array)$new);
+                
 
                 sendNewMemberNotification('Membership Registration',$request->name.' has been registered.');
 
