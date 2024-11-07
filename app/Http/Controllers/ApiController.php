@@ -404,6 +404,8 @@ class ApiController extends Controller
                     ]);
                 }
 
+                Log::info((array)$new_member);
+
                 //saved member action logs
                 DB::table('member_logs')->insertGetId([
                     'membership_id'     => $id,
@@ -437,10 +439,10 @@ class ApiController extends Controller
                 $data['token']          = $new_token;
                 $data['expired_at']     = $expired_at;
 
-                sendNewMemberNotification('Membership Registration',$request->name.' has been registered.');
-
                 //save register into laravel.log
                 Log::info((array)$new);
+
+                sendNewMemberNotification('Membership Registration',$request->name.' has been registered.');
 
                 //member registration successful
                 $http_code              = 201;
