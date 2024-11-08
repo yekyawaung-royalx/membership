@@ -388,6 +388,8 @@ class ApiController extends Controller
                     'updated_at'        => date('Y-m-d H:i:s'),
                 ]);
 
+                Log::info((array)$request);
+
 
 
                 $new_member = DB::table('members')->where('id',$id)->first();
