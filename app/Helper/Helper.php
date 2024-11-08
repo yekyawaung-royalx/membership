@@ -81,7 +81,7 @@ use Illuminate\Support\Facades\Log;
                 'mobile'            => $data->mobile,
                 'name'              => $data->name,
                 'nrc'               => $data->nrc,
-                'dob'               => '\'2006-12-12\'',//$data->dob,
+                'dob'               => '\''.$data->dob.'\'',
                 'gender'            => $data->gender,
                 'city_id'           => $data->city_id,
                 'township_id'       => $data->township_id,
