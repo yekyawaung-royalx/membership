@@ -370,7 +370,7 @@ class ApiController extends Controller
                     'passcode'          => $passcode,
                     'nrc'               => $request->nrc,
                     'dob'               => $request->dob,
-                    'gender'            => $request->gender,
+                    'gender'            => 'male',//$request->gender,
                     'state_id'          => $state->digital_id, //digital's state_id 
                     'state_name'        => $state->en_name,
                     'city_id'           => $township->digital_city_id,
