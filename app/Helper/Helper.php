@@ -70,6 +70,11 @@ use Illuminate\Support\Facades\Log;
     /* new customer created at digital */
     function new_member_create($data){
         $user = digital_user_token(); 
+
+        Log::info('sent to digital:');
+        Log::info((array)$user);
+         Log::info((array)$data);
+
         
         $token = $user->access_token;
         $api_url = env('DIGITAL_API').'/cus-registraction';
@@ -111,8 +116,7 @@ use Illuminate\Support\Facades\Log;
         
         curl_close($curl);
 
-        Log::info('sent to digital:');
-         Log::info((array)$data);
+        
 
         return json_decode($response);
     }
