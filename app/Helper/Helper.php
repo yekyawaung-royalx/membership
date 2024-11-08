@@ -71,26 +71,10 @@ use Illuminate\Support\Facades\Log;
     function new_member_create($data){
         $user = digital_user_token(); 
 
-        Log::info('sent to digital:');
-        Log::info((array)$user->access_token);
-         Log::info((array)$data);
-
-        
         $token = $user->access_token;
         $api_url = env('DIGITAL_API').'/cus-registraction';
 
-        $curl = curl_init();
-        
-        curl_setopt_array($curl, array(
-            CURLOPT_URL => $api_url,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => '',
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => 'POST',
-            CURLOPT_POSTFIELDS => array(
+        $raw = array(
                 'login'             => env('DIGITAL_LOGIN'),
                 'password'          => env('DIGITAL_PASSWORD'),
                 'db'                => env('DIGITAL_DATABASE'),
@@ -106,7 +90,24 @@ use Illuminate\Support\Facades\Log;
                 'nrc_front_photo'   => $data->nrc_front_photo,
                 'nrc_back_photo'    => $data->nrc_back_photo,
                 'face_photo'        => $data->selfie_photo
-            ),
+            );
+
+        Log::info('sent to digital:');
+        Log::info((array)$user->access_token);
+         Log::info((array)$raw);
+
+        $curl = curl_init();
+        
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => $api_url,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => $raw,
             CURLOPT_HTTPHEADER => array(
                 'access-token: '.$token,
             ),
