@@ -29,6 +29,7 @@ class MemberController extends Controller
     {   
         $asset = assets();
         $member = DB::table('members')->where('id',$id)->first();
+        
 
         return view($asset.'.members.view',compact('member'));
     }
@@ -70,15 +71,15 @@ class MemberController extends Controller
 
     public function json_members_status($status){
         if($status == 'unverified'){
-            $members = DB::table('members')->select('id','digital_id','name','mobile','ref','status','active','registered_at','user_level')->where('status',0)->orderBy('registered_at','desc')->paginate(200);
+            $members = DB::table('members')->select('id','digital_id','name','mobile','ref','status','active','registered_at','user_level','points')->where('status',0)->orderBy('registered_at','desc')->paginate(200);
         }else if($status == 'processing'){
-            $members = DB::table('members')->select('id','digital_id','name','mobile','ref','status','active','registered_at','user_level')->where('status',1)->orderBy('registered_at','desc')->paginate(200);
+            $members = DB::table('members')->select('id','digital_id','name','mobile','ref','status','active','registered_at','user_level','points')->where('status',1)->orderBy('registered_at','desc')->paginate(200);
         }else if($status == 'verified'){
-            $members = DB::table('members')->select('id','digital_id','name','mobile','ref','status','active','registered_at','user_level')->where('status',2)->orderBy('registered_at','desc')->paginate(200);
+            $members = DB::table('members')->select('id','digital_id','name','mobile','ref','status','active','registered_at','user_level','points')->where('status',2)->orderBy('registered_at','desc')->paginate(200);
         }else if($status == 'rejected'){
-            $members = DB::table('members')->select('id','digital_id','name','mobile','ref','status','active','registered_at','user_level')->where('status',3)->orderBy('registered_at','desc')->paginate(200);
+            $members = DB::table('members')->select('id','digital_id','name','mobile','ref','status','active','registered_at','user_level','points')->where('status',3)->orderBy('registered_at','desc')->paginate(200);
         }else{
-            $members = DB::table('members')->select('id','digital_id','name','mobile','ref','status','active','registered_at','user_level')->orderBy('registered_at','desc')->paginate(200);
+            $members = DB::table('members')->select('id','digital_id','name','mobile','ref','status','active','registered_at','user_level','points')->orderBy('registered_at','desc')->paginate(200);
         }
         
 
@@ -150,10 +151,10 @@ class MemberController extends Controller
     }
 
     public function download_digital_data(Request $request){
-        $response   = array();
-        $total      = 0;
-        $start      = $request->start_date;
-        $end        = $request->end_date;
+        $response  = array();
+        $total          = 0;
+        $start          = '2023-12-01'; //$request->start_date;
+        $end           = '2023-12-31'; //$request->end_date;
 
 
         $data = downloaded_digital_data($start,$end);
@@ -164,8 +165,8 @@ class MemberController extends Controller
             if(!$check){
                 $total++;
                 DB::table('digital_members')->insert([
-                    'digital_id'        => $member->uid,
-                    'icode'             => $member->login,
+                    'digital_id'        => $member->id,
+                    'ref'             => $member->login,
                     'name'              => $member->name,
                     'mobile'            => $member->mobile,
                     'state_name'        => $member->state,
@@ -181,7 +182,7 @@ class MemberController extends Controller
                 ]);
             }else{
                 DB::table('digital_members')->where('mobile',$member->mobile)->update([
-                    'icode'             => $member->login,
+                    'ref'             => $member->login,
                     'name'              => $member->name,
                     'state_name'        => $member->state,
                     'address'           => $member->address,
@@ -191,7 +192,6 @@ class MemberController extends Controller
                     'selfie_photo'      => $member->face_photo,
                     'active'            => $member->active,
                     'sync'              => 0,
-                    'created_at'        => date('Y-m-d H:i:s'),
                     'updated_at'        => date('Y-m-d H:i:s'),
                 ]);
             }
@@ -201,7 +201,7 @@ class MemberController extends Controller
         $response['end']        = $end;
         $response['message']    = 'Total '.$total.' records have been downloaded.';
 
-        return response()->json($response);
+        return response()->json($data);
 
     }
 
@@ -312,6 +312,12 @@ class MemberController extends Controller
             ->paginate(100);
 
         return response()->json($members);
+    }
+
+    public function member_points($ref){
+        $points = DB::table('point_histories')->where('ref',$ref)->get();
+
+        return response()->json($points);
     }
 
 }

@@ -94,7 +94,7 @@ use Illuminate\Support\Facades\Log;
 
         Log::info('sent to digital:');
         Log::info((array)$user->access_token);
-         Log::info((array)$raw);
+         
 
         $curl = curl_init();
         
@@ -117,6 +117,7 @@ use Illuminate\Support\Facades\Log;
         
         curl_close($curl);
 
+        Log::info((array)$raw);
         
 
         return json_decode($response);
