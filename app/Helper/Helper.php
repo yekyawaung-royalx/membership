@@ -72,7 +72,7 @@ use Illuminate\Support\Facades\Log;
         $user = digital_user_token(); 
 
         Log::info('sent to digital:');
-        Log::info((array)$user);
+        Log::info((array)$user->access_token);
          Log::info((array)$data);
 
         
