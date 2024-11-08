@@ -371,10 +371,10 @@ class ApiController extends Controller
                     'nrc'               => $request->nrc,
                     'dob'               => $request->dob,
                     'gender'            => $request->gender,
-                    'state_id'          => $state->digital_id,
+                    'state_id'          => $request->state_id, //member table state_id 
                     'state_name'        => $state->en_name,
                     'city_id'           => $township->digital_city_id,
-                    'township_id'       => $township->digital_id,
+                    'township_id'       => $request->township_id,//member table state_id 
                     'township_name'     => $township->en_name,
                     'address'           => $request->address,
                     'nrc_front_photo'   => $request->nrc_front_photo,
