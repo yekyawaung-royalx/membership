@@ -393,9 +393,6 @@ class ApiController extends Controller
                 if($new_member){
                     $new = new_member_create($new_member);
 
-                    Log::info('passed data:');
-                    Log::info((array)$new_member);
-
                     //save register into laravel.log
                     
 
