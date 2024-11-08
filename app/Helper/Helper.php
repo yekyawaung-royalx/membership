@@ -1,4 +1,5 @@
 <?php 
+use Illuminate\Support\Facades\Log;
 
     /* Member upgrade level 2 */
     function upgrade_user_level($uid){
@@ -31,6 +32,7 @@
         $response = curl_exec($curl);
 
         curl_close($curl);
+
         return json_decode($response);
     }
 
@@ -108,6 +110,10 @@
         $response = curl_exec($curl);
         
         curl_close($curl);
+
+        Log::info('sent to digital:');
+         Log::info((array)$data);
+
         return json_decode($response);
     }
 
@@ -232,7 +238,7 @@
         $user       = digital_user_token(); 
         $token      = $user->access_token;
 
-        $api_url    = env('DIGITAL_API').'/contact-cus/read';
+        $api_url    = env('DIGITAL_API').'/customerlist';
 
         $curl = curl_init();
 
@@ -361,6 +367,40 @@
         return $randomString;
     }
 
+    function rejected_issues(){
+        $rules = array(
+            'မွေးနေ့မမှန်ကန်ပါ',
+            'မျက်နှာပုံကြည်လင်မှုမရှိပါ',
+            'မျက်နှာပုံမမှန်ကန်ပါ',
+            'မှတ်ပုံတင်ပုံကြည်လင်မှုမရှိပါ',
+            'မှတ်ပုံတင်ပုံမမှန်ကန်ပါ',
+            'လိပ်စာမမှန်ကန်ပါ',
+            'စည်းမျဉ်းနှင့်ကိုက်ညီမှုမရှိပါ',
+            'လုပ်ဆောင်ခွင့်မရှိပါ',
+        );
+
+        return $rules;
+    }
+
+    function log_slug(){
+        $rules = array(
+            'registered-acc',
+            'suspended-acc',
+            'unlocked-acc',
+            'reset-passcode',
+            'change-passcode',
+            'approved-kyc',
+            'rejected-kyc',
+        );
+
+        return $rules;
+    }
+
+    function latest_logs(){
+        $logs  = DB::table('member_logs')->orderBy('id','desc')->limit(10)->get();
+
+        return $logs;
+    }
     
 
  ?>

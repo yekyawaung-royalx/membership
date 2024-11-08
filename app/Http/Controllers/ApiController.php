@@ -376,7 +376,7 @@ class ApiController extends Controller
                     'city_id'           => $township->digital_city_id,
                     'township_id'       => $township->digital_id,//digital's  township_id 
                     'township_name'     => $township->en_name,
-                    'address'           => $request->address,
+                    'address'           => $request->address,       
                     'nrc_front_photo'   => $request->nrc_front_photo,
                     'nrc_back_photo'    => $request->nrc_back_photo,
                     'selfie_photo'      => $request->selfie_photo,
@@ -397,8 +397,7 @@ class ApiController extends Controller
                     Log::info((array)$new_member);
 
                     //save register into laravel.log
-                    Log::info('sent to digital:');
-                    Log::info((array)$new);
+                    
 
                     //updated digital_id and ref
                     $member = DB::table('members')->where('id',$id)->update([
