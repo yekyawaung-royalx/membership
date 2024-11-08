@@ -388,15 +388,16 @@ class ApiController extends Controller
                     'updated_at'        => date('Y-m-d H:i:s'),
                 ]);
 
-                Log::info((array)$request);
-
-
 
                 $new_member = DB::table('members')->where('id',$id)->first();
                 if($new_member){
                     $new = new_member_create($new_member);
 
+                    Log::info('passed data:');
+                    Log::info((array)$new_member);
+
                     //save register into laravel.log
+                    Log::info('sent to digital:');
                     Log::info((array)$new);
 
                     //updated digital_id and ref
@@ -409,7 +410,6 @@ class ApiController extends Controller
                     ]);
                 }
 
-                Log::info((array)$new_member);
 
                 //saved member action logs
                 DB::table('member_logs')->insertGetId([
